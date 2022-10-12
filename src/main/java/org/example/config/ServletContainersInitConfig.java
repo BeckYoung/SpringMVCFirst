@@ -2,8 +2,12 @@ package org.example.config;
 
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 import org.springframework.web.servlet.support.AbstractDispatcherServletInitializer;
+
+import javax.servlet.Filter;
+import java.nio.charset.StandardCharsets;
 
 //web容器配置类
 public class ServletContainersInitConfig extends AbstractAnnotationConfigDispatcherServletInitializer {
@@ -20,6 +24,14 @@ public class ServletContainersInitConfig extends AbstractAnnotationConfigDispatc
     @Override
     protected String[] getServletMappings() {
         return new String[] {"/"};
+    }
+
+    @Override
+    protected Filter[] getServletFilters() {
+        // 处理中文乱码
+        CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
+        encodingFilter.setEncoding(StandardCharsets.UTF_8.name());
+        return new Filter[] {encodingFilter};
     }
 }
 
